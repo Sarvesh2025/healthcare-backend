@@ -9,9 +9,7 @@ const DoctorProfileD = require('../models/DoctorProfile');
 // Doctor: view today's appointments
 routerD.get('/today', authD, authorizeD('doctor'), async (req, res) => {
 try {
-const start = new Date(); start.setHours(0,0,0,0);
-const end = new Date(); end.setHours(23,59,59,999);
-const appts = await AppointmentD.find({ doctor: req.user._id, datetime: { $gte: start, $lte: end }, status: 'booked' }).populate('patient', 'name email');
+const appts = await AppointmentD.find({ doctor: req.user._id }).populate('patient', 'name email');
 res.json(appts);
 } catch (err) { res.status(500).json({ message: err.message }); }
 });
